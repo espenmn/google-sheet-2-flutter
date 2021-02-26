@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_sheet_db/feedback_model.dart';
+import 'package:google_sheet_db/matrett_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -9,27 +9,26 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<FeedbackModel> feedbacks = List<FeedbackModel>();
+  List<MatrettModel> matretter = List<MatrettModel>();
 
-  getFeedbackFromSheet() async {
+  getDataFromSheet() async {
+    print('getting data');
     var raw = await http.get(
-        "https://script.google.com/macros/s/AKfycbzbTEO2B2lxO_kEmH7juC9RLkZByycz_QViG7LOeaJ4FYB38gs/exec");
+        "https://script.google.com/macros/s/AKfycbzttqFcWR5MeqjESvYXko73QxLjIEqX51ipDAAjIp4PYjjzwooh/exec");
+
+    print(raw.toString());
 
     var jsonFeedback = convert.jsonDecode(raw.body);
     print('this is json Feedback $jsonFeedback');
 
-    // feedbacks = jsonFeedback.map((json) => FeedbackModel.fromJson(json));
-
     jsonFeedback.forEach((element) {
       print('$element THIS IS NEXT>>>>>>>');
-      FeedbackModel feedbackModel = new FeedbackModel();
-      feedbackModel.name = element['name'];
-      feedbackModel.feedback = element['feedback'];
-      feedbackModel.profilePic = element['profile_pic'];
-      feedbackModel.source = element['source'];
-      feedbackModel.sourceUrl = element["source_url"];
-
-      feedbacks.add(feedbackModel);
+      MatrettModel matrettModel = MatrettModel();
+      matrettModel.navn = element['navn'];
+      matrettModel.beskrivelse = element['beskrivelse'];
+      matrettModel.bilde = element['bilde'];
+      matrettModel.pris = element['pris'];
+      matretter.add(matrettModel);
     });
 
     //print('${feedbacks[0]}');
@@ -37,7 +36,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    getFeedbackFromSheet();
+    getDataFromSheet();
     super.initState();
   }
 
@@ -45,19 +44,18 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Students"),
+        title: Text("Min lille café"),
         elevation: 0,
       ),
       body: Container(
         child: ListView.builder(
-            itemCount: feedbacks.length,
+            itemCount: matretter.length,
             itemBuilder: (context, index) {
-              return FeedbackTile(
-                profilePic: feedbacks[index].profilePic,
-                name: feedbacks[index].name,
-                source: feedbacks[index].source,
-                feedback: feedbacks[index].feedback,
-                sourceUrl: feedbacks[index].sourceUrl,
+              return MatrettTile(
+                bilde: matretter[index].bilde,
+                navn: matretter[index].navn,
+                beskrivelse: matretter[index].beskrivelse,
+                pris: matretter[index].pris,
               );
             }),
       ),
@@ -65,10 +63,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-class FeedbackTile extends StatelessWidget {
-  final String profilePic, name, source, feedback, sourceUrl;
-  FeedbackTile(
-      {this.profilePic, this.name, this.source, this.feedback, this.sourceUrl});
+class MatrettTile extends StatelessWidget {
+  final String navn, beskrivelse, bilde, pris;
+  MatrettTile({this.navn, this.bilde, this.beskrivelse, this.pris});
 
   @override
   Widget build(BuildContext context) {
@@ -84,14 +81,14 @@ class FeedbackTile extends StatelessWidget {
                   width: 40,
                   child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(40)),
-                      child: Image.network(profilePic))),
+                      child: Image.network(bilde))),
               SizedBox(width: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name),
+                  Text(navn),
                   Text(
-                    'from $source',
+                    'pris',
                     style: TextStyle(color: Colors.grey),
                   )
                 ],
@@ -99,7 +96,7 @@ class FeedbackTile extends StatelessWidget {
             ],
           ),
           SizedBox(height: 16),
-          Text(feedback)
+          Text(beskrivelse)
         ],
       ),
     );
