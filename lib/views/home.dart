@@ -18,18 +18,20 @@ class _HomeState extends State<Home> {
 
     print(raw.toString());
 
-    var jsonFeedback = convert.jsonDecode(raw.body);
-    print('this is json Feedback $jsonFeedback');
+    print(raw.body);
 
-    jsonFeedback.forEach((element) {
-      print('$element THIS IS NEXT>>>>>>>');
-      MatrettModel matrettModel = MatrettModel();
-      matrettModel.navn = element['navn'];
-      matrettModel.beskrivelse = element['beskrivelse'];
-      matrettModel.bilde = element['bilde'];
-      matrettModel.pris = element['pris'];
-      matretter.add(matrettModel);
-    });
+    // var jsonFeedback = convert.jsonDecode(raw.body);
+    // print('this is json Feedback $jsonFeedback');
+
+    // jsonFeedback.forEach((element) {
+    //   print('$element THIS IS NEXT>>>>>>>');
+    //   MatrettModel matrettModel = MatrettModel();
+    //   matrettModel.navn = element['navn'];
+    //   matrettModel.beskrivelse = element['beskrivelse'];
+    //   matrettModel.bilde = element['bilde'];
+    //   matrettModel.pris = element['pris'];
+    //   matretter.add(matrettModel);
+    // });
 
     //print('${feedbacks[0]}');
   }
