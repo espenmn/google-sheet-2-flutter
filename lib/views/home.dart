@@ -12,28 +12,24 @@ class _HomeState extends State<Home> {
   List<MatrettModel> matretter = List<MatrettModel>();
 
   getDataFromSheet() async {
-    print('getting data');
+    print('getting  the data');
     var raw = await http.get(
-        "https://script.google.com/macros/s/AKfycbzttqFcWR5MeqjESvYXko73QxLjIEqX51ipDAAjIp4PYjjzwooh/exec");
+        "https://script.google.com/macros/s/AKfycbyVQdl3bfjpF0CBiUnKPDWeq7Sn0_aESWg4jyl6Tx02Qqqs0cA/exec");
 
-    print(raw.toString());
+    // print(raw.body);
 
-    print(raw.body);
-
-    // var jsonFeedback = convert.jsonDecode(raw.body);
+    var jsonFeedback = convert.jsonDecode(raw.body);
     // print('this is json Feedback $jsonFeedback');
 
-    // jsonFeedback.forEach((element) {
-    //   print('$element THIS IS NEXT>>>>>>>');
-    //   MatrettModel matrettModel = MatrettModel();
-    //   matrettModel.navn = element['navn'];
-    //   matrettModel.beskrivelse = element['beskrivelse'];
-    //   matrettModel.bilde = element['bilde'];
-    //   matrettModel.pris = element['pris'];
-    //   matretter.add(matrettModel);
-    // });
-
-    //print('${feedbacks[0]}');
+    jsonFeedback.forEach((element) {
+      print('$element dette er neste>>');
+      MatrettModel matrettModel = MatrettModel();
+      matrettModel.navn = element['navn'];
+      matrettModel.beskrivelse = element['beskrivelse'];
+      matrettModel.bilde = element['bilde'];
+      matrettModel.pris = element['pris'];
+      matretter.add(matrettModel);
+    });
   }
 
   @override
@@ -47,6 +43,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Min lille café"),
+        backgroundColor: Colors.amber,
         elevation: 0,
       ),
       body: Container(
@@ -66,7 +63,8 @@ class _HomeState extends State<Home> {
 }
 
 class MatrettTile extends StatelessWidget {
-  final String navn, beskrivelse, bilde, pris;
+  final String navn, beskrivelse, bilde;
+  final int pris;
   MatrettTile({this.navn, this.bilde, this.beskrivelse, this.pris});
 
   @override
@@ -90,7 +88,7 @@ class MatrettTile extends StatelessWidget {
                 children: [
                   Text(navn),
                   Text(
-                    'pris',
+                    pris.toString(),
                     style: TextStyle(color: Colors.grey),
                   )
                 ],
