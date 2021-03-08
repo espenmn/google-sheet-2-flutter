@@ -32,9 +32,40 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // getSheetData() async {
+  //   print('lets get it from google');
+  //
+  //   // init GSheets
+  //   final gsheets = GSheets(_credentials);
+  //   // fetch spreadsheet by its id
+  //   final ss = await gsheets.spreadsheet(_spreadsheetId);
+  //   // get worksheet by its title
+  //   var sheet = ss.worksheetByTitle('example');
+  //   // create worksheet if it does not exist yet
+  //   sheet ??= await ss.addWorksheet('example');
+  //
+  //   // cellsRow.forEach((cell)
+  //   //
+  //
+  //   var rowws = sheet.values.allRows();
+  //
+  //   print(rowws.toString());
+  //
+  //   // rowws.forEach((element) {
+  //   //   print('$element dette er neste>>');
+  //   //   MatrettModel matrettModel = MatrettModel();
+  //   //   matrettModel.navn = element['navn'];
+  //   //   matrettModel.beskrivelse = element['beskrivelse'];
+  //   //   matrettModel.bilde = element['bilde'];
+  //   //   matrettModel.pris = element['pris'];
+  //   //   matretter.add(matrettModel);
+  //   // });
+  // }
+
   @override
   void initState() {
     getDataFromSheet();
+    // getSheetData();
     super.initState();
   }
 
@@ -43,7 +74,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Min lille café"),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.red[900],
         elevation: 0,
       ),
       body: Container(
@@ -70,34 +101,57 @@ class MatrettTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                  height: 40,
-                  width: 40,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                      child: Image.network(bilde))),
-              SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(navn),
-                  Text(
-                    pris.toString(),
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
-              )
-            ],
-          ),
-          SizedBox(height: 16),
-          Text(beskrivelse)
-        ],
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 100,
+                  width: 140,
+                  child: Image.network(
+                    bilde,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      navn,
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red[700],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      beskrivelse,
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      "Pris: ${pris.toString()},–",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            // Text(beskrivelse)
+          ],
+        ),
       ),
     );
   }
